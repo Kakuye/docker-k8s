@@ -2,6 +2,194 @@
 
 This guide is **100% lab-based** and designed for beginners. Every concept is paired with commands you can run immediately.
 
+## Lab 1: Install Docker (Ubuntu)
+
+### Step 1: Update system
+
+```bash
+sudo apt update
+sudo apt upgrade -y
+```
+
+### Step 2: Install dependencies
+
+```bash
+sudo apt install -y ca-certificates curl gnupg
+```
+
+### Step 3: Add Docker GPG key
+
+```bash
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+```
+
+### Step 4: Add repository
+
+```bash
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo $VERSION_CODENAME) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+### Step 5: Install Docker
+
+```bash
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+```
+
+### Step 6: Verify
+
+```bash
+docker --version
+sudo docker run hello-world
+```
+
+### Explanation
+
+* Docker is a **container engine** that runs applications in isolated environments.
+* `hello-world` confirms Docker works correctly.
+
+---
+
+## Lab 2: Basic Docker Commands
+
+### Run container
+
+```bash
+docker run -it ubuntu bash
+```
+
+### List containers
+
+```bash
+docker ps
+docker ps -a
+```
+
+### Stop container
+
+```bash
+docker stop <container_id>
+```
+
+### Remove container
+
+```bash
+docker rm <container_id>
+```
+
+### Explanation
+
+* `-it` gives interactive terminal
+* Containers are **temporary environments**
+
+---
+
+## Lab 3: Working with Images
+
+### Pull image
+
+```bash
+docker pull nginx
+```
+
+### List images
+
+```bash
+docker images
+```
+
+### Remove image
+
+```bash
+docker rmi nginx
+```
+
+### Explanation
+
+* Images are **templates** for containers
+* Containers are **running instances** of images
+
+---
+
+## Lab 4: Run Web Server (Nginx)
+
+```bash
+docker run -d -p 8080:80 nginx
+```
+
+### Test
+
+Open browser:
+
+```
+http://localhost:8080
+```
+
+### Explanation
+
+* `-d` runs in background
+* `-p` maps ports (host:container)
+
+---
+
+## Lab 5: Create Your Own Image (Dockerfile)
+
+### Step 1: Create project
+
+```bash
+mkdir myapp
+cd myapp
+```
+
+### Step 2: Create Dockerfile
+
+```bash
+nano Dockerfile
+```
+
+Paste:
+
+```Dockerfile
+FROM ubuntu
+RUN apt update && apt install -y nginx
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+### Step 3: Build image
+
+```bash
+docker build -t mynginx .
+```
+
+### Step 4: Run
+
+```bash
+docker run -d -p 8081:80 mynginx
+```
+
+### Explanation
+
+* Dockerfile defines how image is built
+* `-t` tags image
+
+---
+
+## Lab 6: Volumes (Persistent Storage)
+
+```bash
+docker run -d -p 8082:80 -v mydata:/usr/share/nginx/html nginx
+```
+
+### Explanation
+
+* Volumes store data **outside containers**
+* Prevent data loss when container stops
+
+---
+
 ---
 
 # PART 1: DOCKER LABS
@@ -362,195 +550,7 @@ docker run -d -p 8085:80 -v $(pwd)/html:/usr/share/nginx/html nginx
 
 ---
 
-# ORIGINAL LABS CONTINUE BELOW
 
-## Lab 1: Install Docker (Ubuntu)
-
-### Step 1: Update system
-
-```bash
-sudo apt update
-sudo apt upgrade -y
-```
-
-### Step 2: Install dependencies
-
-```bash
-sudo apt install -y ca-certificates curl gnupg
-```
-
-### Step 3: Add Docker GPG key
-
-```bash
-sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-```
-
-### Step 4: Add repository
-
-```bash
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo $VERSION_CODENAME) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-
-### Step 5: Install Docker
-
-```bash
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io
-```
-
-### Step 6: Verify
-
-```bash
-docker --version
-sudo docker run hello-world
-```
-
-### Explanation
-
-* Docker is a **container engine** that runs applications in isolated environments.
-* `hello-world` confirms Docker works correctly.
-
----
-
-## Lab 2: Basic Docker Commands
-
-### Run container
-
-```bash
-docker run -it ubuntu bash
-```
-
-### List containers
-
-```bash
-docker ps
-docker ps -a
-```
-
-### Stop container
-
-```bash
-docker stop <container_id>
-```
-
-### Remove container
-
-```bash
-docker rm <container_id>
-```
-
-### Explanation
-
-* `-it` gives interactive terminal
-* Containers are **temporary environments**
-
----
-
-## Lab 3: Working with Images
-
-### Pull image
-
-```bash
-docker pull nginx
-```
-
-### List images
-
-```bash
-docker images
-```
-
-### Remove image
-
-```bash
-docker rmi nginx
-```
-
-### Explanation
-
-* Images are **templates** for containers
-* Containers are **running instances** of images
-
----
-
-## Lab 4: Run Web Server (Nginx)
-
-```bash
-docker run -d -p 8080:80 nginx
-```
-
-### Test
-
-Open browser:
-
-```
-http://localhost:8080
-```
-
-### Explanation
-
-* `-d` runs in background
-* `-p` maps ports (host:container)
-
----
-
-## Lab 5: Create Your Own Image (Dockerfile)
-
-### Step 1: Create project
-
-```bash
-mkdir myapp
-cd myapp
-```
-
-### Step 2: Create Dockerfile
-
-```bash
-nano Dockerfile
-```
-
-Paste:
-
-```Dockerfile
-FROM ubuntu
-RUN apt update && apt install -y nginx
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-### Step 3: Build image
-
-```bash
-docker build -t mynginx .
-```
-
-### Step 4: Run
-
-```bash
-docker run -d -p 8081:80 mynginx
-```
-
-### Explanation
-
-* Dockerfile defines how image is built
-* `-t` tags image
-
----
-
-## Lab 6: Volumes (Persistent Storage)
-
-```bash
-docker run -d -p 8082:80 -v mydata:/usr/share/nginx/html nginx
-```
-
-### Explanation
-
-* Volumes store data **outside containers**
-* Prevent data loss when container stops
-
----
 
 # PART 2: KUBERNETES LABS
 
