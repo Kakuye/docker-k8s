@@ -430,12 +430,3 @@ Update deployment YAML with your image.
 
 ---
 
-# NEXT STEPS
-
-* Learn Helm
-* Learn Ingress
-* Learn CI/CD pipelines
-
----
-
-This lab is designed to be repeated multiple times until comfortable.
