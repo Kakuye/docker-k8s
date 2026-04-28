@@ -192,8 +192,6 @@ docker run -d -p 8082:80 -v mydata:/usr/share/nginx/html nginx
 
 ---
 
-# PART 1: DOCKER LABS
-
 ## Advanced Docker Commands, Options & Real Use Cases
 
 This section expands your practical Docker knowledge with **real-world usage patterns**.
