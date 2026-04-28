@@ -2,6 +2,8 @@
 
 This guide is **100% lab-based** and designed for beginners. Every concept is paired with commands you can run immediately.
 
+# PART 1: DOCKER LABS
+
 ## Lab 1: Install Docker (Ubuntu)
 
 ### Step 1: Update system
